@@ -40,7 +40,7 @@ fn main() {
         });
     for row in 1..127 {
         for col in 0..8 {
-            let id = (row * 8) + col;
+            let id = seat_id(row, col);
             if existing_seats.contains_key(&id) {
                 continue;
             }
