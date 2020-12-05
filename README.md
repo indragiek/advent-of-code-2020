@@ -1,2 +1,3 @@
 # advent-of-code-2020
-My Rust solutions for https://adventofcode.com
+
+My solutions for https://adventofcode.com and my first time writing Rust.
