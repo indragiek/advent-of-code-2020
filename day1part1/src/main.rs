@@ -6,7 +6,7 @@ use std::process;
 fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
-        println!("usage: day1 <path to input text file>");
+        println!("usage: day1part1 <path to input text file>");
         process::exit(1);
     }
     let filename = &args[1];
