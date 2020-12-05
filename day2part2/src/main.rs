@@ -69,15 +69,15 @@ fn parse_line(line: String) -> Result<PasswordPolicy, InputError> {
     if components.len() < 3 {
         return Err(InputError::InvalidLineFormat);
     }
-    let min_max_components: Vec<&str> = components[0].split("-").collect();
-    if min_max_components.len() < 2 {
+    let pos_components: Vec<&str> = components[0].split("-").collect();
+    if pos_components.len() < 2 {
         return Err(InputError::InvalidPositions);
     }
 
-    let pos_1 = min_max_components[0]
+    let pos_1 = pos_components[0]
         .parse::<usize>()
         .map_err(|_| InputError::InvalidPositions)?;
-    let pos_2 = min_max_components[1]
+    let pos_2 = pos_components[1]
         .parse::<usize>()
         .map_err(|_| InputError::InvalidPositions)?;
 
