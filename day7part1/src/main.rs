@@ -27,7 +27,6 @@ fn main() {
         .collect();
     let count = bags
         .keys()
-        .filter(|&k| k != "shiny gold")
         .map(|k| can_contain_bag(&bags, k.clone(), "shiny gold"))
         .filter(|&x| x)
         .count();
@@ -39,13 +38,12 @@ fn can_contain_bag(
     check_color: String,
     want_color: &str,
 ) -> bool {
-    return check_color == want_color
-        || bags
-            .get(&check_color)
-            .unwrap_or(&Vec::new())
-            .into_iter()
-            .find(|bag| can_contain_bag(bags, bag.1.clone(), want_color))
-            .is_some();
+    return bags
+        .get(&check_color)
+        .unwrap_or(&Vec::new())
+        .into_iter()
+        .find(|bag| bag.1 == want_color || can_contain_bag(bags, bag.1.clone(), want_color))
+        .is_some();
 }
 
 fn parse_line(line: String) -> Result<Rule, InputError> {
