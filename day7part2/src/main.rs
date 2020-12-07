@@ -13,7 +13,7 @@ struct Rule {
 fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
-        println!("usage: day7part1 <path to input text file>");
+        println!("usage: day7part2 <path to input text file>");
         process::exit(1);
     }
     let filename = &args[1];
@@ -25,25 +25,16 @@ fn main() {
         .map(|rule| (rule.parent_bag_color, rule.child_bags))
         .into_iter()
         .collect();
-    let count = bags
-        .keys()
-        .map(|k| can_contain_bag(&bags, k.clone(), "shiny gold"))
-        .filter(|&x| x)
-        .count();
-    println!("{}", count);
+    println!("{}", count_bags(&bags, "shiny gold"));
 }
 
-fn can_contain_bag(
-    bags: &HashMap<String, Vec<(u32, String)>>,
-    check_color: String,
-    want_color: &str,
-) -> bool {
+fn count_bags(bags: &HashMap<String, Vec<(u32, String)>>, check_color: &str) -> u32 {
     return bags
-        .get(&check_color)
+        .get(check_color)
         .unwrap_or(&Vec::new())
         .into_iter()
-        .find(|bag| bag.1 == want_color || can_contain_bag(bags, bag.1.clone(), want_color))
-        .is_some();
+        .map(|bag| bag.0 + (bag.0 * count_bags(bags, bag.1.as_str())))
+        .sum();
 }
 
 fn parse_line(line: String) -> Result<Rule, InputError> {
