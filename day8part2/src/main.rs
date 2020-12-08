@@ -11,6 +11,15 @@ enum OpCode {
     Nop,
 }
 
+impl OpCode {
+    fn is_acc(&self) -> bool {
+        match *self {
+            OpCode::Acc => true,
+            _ => false,
+        }
+    }
+}
+
 impl Copy for OpCode {}
 
 impl Clone for OpCode {
@@ -50,11 +59,14 @@ fn main() {
 
 fn eval_repair(instructions: Vec<Instruction>) -> i32 {
     for (idx, instr) in instructions.iter().enumerate() {
+        if instr.op_code.is_acc() {
+            continue;
+        }
         let mut new_instructions = instructions.clone();
         match instr.op_code {
             OpCode::Nop => new_instructions[idx].op_code = OpCode::Jmp,
             OpCode::Jmp => new_instructions[idx].op_code = OpCode::Nop,
-            OpCode::Acc => {}
+            _ => {}
         }
         let (acc, completed) = eval_until_infinite_loop(new_instructions);
         if completed {
