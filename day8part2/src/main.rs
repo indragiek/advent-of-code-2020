@@ -35,7 +35,7 @@ impl Clone for Instruction {
 fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
-        println!("usage: day8part1 <path to input text file>");
+        println!("usage: day8part2 <path to input text file>");
         process::exit(1);
     }
     let filename = &args[1];
