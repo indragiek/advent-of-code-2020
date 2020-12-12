@@ -18,13 +18,13 @@ fn main() -> Result<(), InputError> {
         .map(|l| l.parse::<u64>().unwrap())
         .collect();
     adapters.sort();
-    let device_joltage = adapters.iter().max().unwrap();
-    println!("{}", count_combinations(&adapters, *device_joltage));
+    println!("{}", count_combinations(&adapters));
     Ok(())
 }
 
-fn count_combinations(adapters: &Vec<u64>, device_joltage: u64) -> u64 {
+fn count_combinations(adapters: &Vec<u64>) -> u64 {
     let mut counts = HashMap::new();
+    let device_joltage = *adapters.last().unwrap();
     counts.insert(0u64, 1u64);
 
     for joltage in once(&0u64)
