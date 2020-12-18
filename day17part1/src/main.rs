@@ -26,7 +26,7 @@ fn main() {
                 });
         });
 
-    for i in 0..6 {
+    for _ in 0..6 {
         let mut new_grid = grid.clone();
         for x in (grid.iter().map(|(x, _, _)| x).min().unwrap() - 1)
             ..=(grid.iter().map(|(x, _, _)| x).max().unwrap() + 1)
