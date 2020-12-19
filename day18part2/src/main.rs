@@ -77,43 +77,37 @@ fn parse_operation(lhs: Box<AST>, remainder: &[char]) -> Box<AST> {
 
 fn parse_operand_from_start(expr: &[char]) -> (Box<AST>, usize) {
     let mut end = 1usize;
-    let mut is_subexpr = false;
-    match expr[0] {
-        '0'..='9' => {
-            while end < expr.len() {
-                match expr[end] {
-                    '0'..='9' => end += 1,
-                    _ => break,
-                }
-            }
-        }
-        '(' => {
-            is_subexpr = true;
-            let mut bracket_count = 1usize;
-            while bracket_count > 0 {
-                match expr[end] {
-                    '(' => bracket_count += 1,
-                    ')' => bracket_count -= 1,
-                    _ => {}
-                }
-                end += 1;
-            }
-        }
-        c => panic!(
-            "unrecognized lhs character: '{}' in '{}'",
-            c,
-            chars_to_str(expr)
-        ),
-    }
     return (
-        Box::new(match is_subexpr {
-            true => AST::Subexpr(build_ast(&str_to_chars(
-                expr[1..(end - 1)].iter().collect(),
-            ))),
-            false => {
+        Box::new(match expr[0] {
+            '0'..='9' => {
+                while end < expr.len() {
+                    match expr[end] {
+                        '0'..='9' => end += 1,
+                        _ => break,
+                    }
+                }
                 let s: String = expr[0..end].iter().collect();
                 AST::Value(s.parse::<i64>().unwrap())
             }
+            '(' => {
+                let mut bracket_count = 1usize;
+                while bracket_count > 0 {
+                    match expr[end] {
+                        '(' => bracket_count += 1,
+                        ')' => bracket_count -= 1,
+                        _ => {}
+                    }
+                    end += 1;
+                }
+                AST::Subexpr(build_ast(&str_to_chars(
+                    expr[1..(end - 1)].iter().collect(),
+                )))
+            }
+            c => panic!(
+                "unrecognized lhs character: '{}' in '{}'",
+                c,
+                chars_to_str(expr)
+            ),
         }),
         end,
     );
